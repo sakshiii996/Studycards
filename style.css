@@ -1,5 +1,5 @@
 
-        /* CSS Variables for theming */
+        
         :root {
             --bg-color: #dceadd;
             --paper-color: #f1faea;
@@ -45,7 +45,6 @@
             padding: 20px;
         }
 
-        /* Header */
         .header {
             text-align: center;
             margin-bottom: 30px;
@@ -76,7 +75,6 @@
             opacity: 0.8;
         }
 
-        /* Theme Toggle */
         .theme-toggle {
             position: absolute;
             top: 20px;
@@ -97,7 +95,7 @@
             transform: translateY(-2px);
         }
 
-        /* Navigation Tabs */
+      
         .nav-tabs {
             display: flex;
             justify-content: center;
@@ -131,7 +129,7 @@
             margin-left: 8px;
         }
 
-        /* Main Content Area */
+      
         .content-section {
             display: none;
             background: var(--paper-color);
@@ -152,7 +150,7 @@
             display: block;
         }
 
-        /* Flashcard Styles */
+    
         .flashcard-container {
             perspective: 1000px;
             margin: 30px auto;
@@ -209,7 +207,6 @@
             background: linear-gradient(135deg, #2a4a3a 0%, #3a5a4a 100%);
         }
 
-        /* Controls */
         .controls {
             text-align: center;
             margin: 20px 0;
@@ -275,7 +272,7 @@
             box-shadow: 0 6px 12px var(--shadow);
         }
 
-        /* Progress Bar */
+       
         .progress-section {
             margin: 30px 0;
             padding: 20px;
@@ -322,7 +319,7 @@
             color: var(--accent-color);
         }
 
-        /* Category Selection */
+       
         .category-selector {
             margin: 20px 0;
             display: flex;
@@ -347,7 +344,7 @@
             color: white;
         }
 
-        /* Card Creation Form */
+        
         .card-form {
             background: var(--paper-color);
             padding: 25px;
@@ -395,7 +392,6 @@
             resize: vertical;
         }
 
-        /* Card List */
         .card-list {
             margin-top: 30px;
         }
@@ -437,7 +433,7 @@
             font-size: 14px;
         }
 
-        /* Timer */
+       
         .timer {
             text-align: center;
             font-size: 2rem;
@@ -446,7 +442,6 @@
             font-weight: bold;
         }
 
-        /* Sticky Notes */
         .sticky-note {
             background: #97d7a8;
             padding: 15px;
@@ -469,7 +464,7 @@
             border-radius: 0 0 15px 15px;
         }
 
-        /* Animations */
+     
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -504,7 +499,7 @@
             animation: bounce 1s ease;
         }
 
-        /* Responsive Design */
+       
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -552,7 +547,7 @@
             }
         }
 
-        /* Loading States */
+   
         .loading {
             display: inline-block;
             width: 20px;
@@ -567,10 +562,10 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Decorative Elements */
+      
      
 
-        /* Success/Error Messages */
+       
         .message {
             padding: 15px;
             border-radius: 10px;
@@ -592,7 +587,7 @@
             border: 2px solid var(--error-color);
         }
 
-        /* Modal Styles */
+      
         .modal {
             display: none;
             position: fixed;
@@ -627,4 +622,5 @@
         .close:hover {
             color: var(--error-color);
         }
+
     
