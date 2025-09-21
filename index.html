@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyCards - Old School Flashcards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light:wght@400&family=Patrick+Hand:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="title">StudyCards</h1>
+            <p class="subtitle">Old School Flashcards for Modern Learning</p>
+        </div>
+
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="switchTab('study')">Study Mode</div>
+            <div class="nav-tab" onclick="switchTab('create')">Create Cards</div>
+            <div class="nav-tab" onclick="switchTab('manage')">Manage Cards</div>
+            <div class="nav-tab" onclick="switchTab('quiz')">Timed Quiz</div>
+            <div class="nav-tab" onclick="switchTab('progress')">Progress</div>
+        </div>
+
+        <!-- Study Mode Section -->
+        <div id="study" class="content-section active">
+           
+
+            <div class="category-selector" id="studyCategorySelector">
+                <div class="category-btn active" data-category="all">All Cards</div>
+            </div>
+
+            <div class="flashcard-container">
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="flashcard-face flashcard-front">
+                        <div id="questionText">Welcome to StudyCards! 📚<br><br>Click to see the answer, then use the buttons below to track your progress.</div>
+                    </div>
+                    <div class="flashcard-face flashcard-back">
+                        <div id="answerText">This is an old-school flashcard app with spaced repetition. Cards you get right 3 times in a row will be mastered! ✨</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-error" onclick="markWrong()">❌ Got it Wrong</button>
+                <button class="btn btn-primary" onclick="flipCard()">🔄 Flip Card</button>
+                <button class="btn btn-success" onclick="markCorrect()">✅ Got it Right</button>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-secondary" onclick="shuffleCards()">🔀 Shuffle</button>
+                <button class="btn btn-secondary" onclick="resetProgress()">🔄 Reset Progress</button>
+                <button class="btn btn-secondary" onclick="nextCard()">⏭️ Next Card</button>
+            </div>
+
+            <div class="progress-section">
+                <h3>Study Progress</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <p id="progressText">0 of 0 cards mastered</p>
+            </div>
+        </div>
+
+        <!-- Create Cards Section -->
+        <div id="create" class="content-section">
+            <h2>Create New Flashcard</h2>
+            <div class="sticky-note">
+                <strong>💡 Tip:</strong> Write clear, concise questions and detailed answers for better retention!
+            </div>
+
+            <div class="card-form">
+                <div class="form-group">
+                    <label class="form-label" for="cardQuestion">Question/Front Side:</label>
+                    <textarea class="form-textarea" id="cardQuestion" placeholder="Enter your question here..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="cardAnswer">Answer/Back Side:</label>
+                    <textarea class="form-textarea" id="cardAnswer" placeholder="Enter your answer here..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="cardCategory">Category:</label>
+                    <input class="form-input" type="text" id="cardCategory" placeholder="e.g., Math, History, Science...">
+                </div>
+
+                <button class="btn btn-success" onclick="createCard()">📝 Create Card</button>
+                <button class="btn btn-secondary" onclick="clearForm()">🗑️ Clear Form</button>
+            </div>
+
+            <div id="createMessage"></div>
+        </div>
+
+        <!-- Manage Cards Section -->
+        <div id="manage" class="content-section">
+            <h2>Manage Your Cards</h2>
+
+            <div class="category-selector" id="manageCategorySelector">
+                <div class="category-btn active" data-category="all">All Cards</div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-secondary" onclick="exportCards()">📤 Export Cards</button>
+                <button class="btn btn-secondary" onclick="importCards()">📥 Import Cards</button>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleImport(event)">
+            </div>
+
+            <div class="card-list" id="cardList">
+                <p>No cards found. Create some cards to get started!</p>
+            </div>
+        </div>
+
+        <!-- Timed Quiz Section -->
+        <div id="quiz" class="content-section">
+            <div class="category-selector" id="quizCategorySelector">
+                <div class="category-btn active" data-category="all">All Cards</div>
+            </div>
+
+            <div class="timer" id="timer">05:00</div>
+
+            <div class="flashcard-container">
+                <div class="flashcard" id="quizCard" onclick="flipQuizCard()">
+                    <div class="flashcard-face flashcard-front">
+                        <div id="quizQuestion">Click "Start Quiz" to begin!</div>
+                    </div>
+                    <div class="flashcard-face flashcard-back">
+                        <div id="quizAnswer">Good luck! 🍀</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-primary" id="quizStartBtn" onclick="startQuiz()">🚀 Start Quiz (5 min)</button>
+                <button class="btn btn-error" id="quizWrongBtn" onclick="quizMarkWrong()" style="display: none;">❌ Wrong</button>
+                <button class="btn btn-success" id="quizRightBtn" onclick="quizMarkCorrect()" style="display: none;">✅ Right</button>
+                <button class="btn btn-secondary" id="quizStopBtn" onclick="stopQuiz()" style="display: none;">⏹️ Stop Quiz</button>
+            </div>
+
+            <div id="quizResults" class="progress-section" style="display: none;">
+                <h3>Quiz Results</h3>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="quizCorrect">0</div>
+                        <div>Correct</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="quizWrong">0</div>
+                        <div>Wrong</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="quizScore">0%</div>
+                        <div>Score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div id="progress" class="content-section">
+            <h2>Learning Progress</h2>
+
+            <div class="sticky-note">
+                <strong>📈 Your Learning Journey:</strong> Track your progress and celebrate your achievements!
+            </div>
+
+            <div class="progress-section">
+                <h3>Overall Statistics</h3>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalCards">0</div>
+                        <div>Total Cards</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="masteredCards">0</div>
+                        <div>Mastered</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="studyStreak">0</div>
+                        <div>Study Streak</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="cardsStudied">0</div>
+                        <div>Cards Studied Today</div>
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="overallProgressFill" style="width: 0%"></div>
+                </div>
+                <p id="overallProgressText">0% Complete</p>
+            </div>
+
+            <div class="progress-section">
+                <h3>Category Breakdown</h3>
+                <div id="categoryProgress">
+                    <p>Study some cards to see category statistics!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Flashcard</h2>
+            <div class="form-group">
+                <label class="form-label" for="editQuestion">Question:</label>
+                <textarea class="form-textarea" id="editQuestion"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="editAnswer">Answer:</label>
+                <textarea class="form-textarea" id="editAnswer"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="editCategory">Category:</label>
+                <input class="form-input" type="text" id="editCategory">
+            </div>
+            <button class="btn btn-success" onclick="saveEdit()">💾 Save Changes</button>
+            <button class="btn btn-secondary" onclick="closeEditModal()">❌ Cancel</button>
+        </div>
+    </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
