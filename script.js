@@ -1,5 +1,4 @@
 
-        // Application State
         let cards = [];
         let currentCardIndex = 0;
         let isFlipped = false;
@@ -8,15 +7,15 @@
         let currentTheme = 'light';
         let editingCardId = null;
 
-        // Quiz State
+     
         let quizActive = false;
         let quizTimer = null;
-        let quizTimeLeft = 300; // 5 minutes
+        let quizTimeLeft = 300; 
         let quizStats = { correct: 0, wrong: 0 };
         let quizCards = [];
         let currentQuizIndex = 0;
 
-        // Default cards
+       
         const defaultCards = [
             {
                 id: Date.now() + Math.random(),
@@ -44,7 +43,7 @@
             }
         ];
 
-        // Initialize app
+        
         function initApp() {
             loadCards();
             loadTheme();
@@ -54,14 +53,14 @@
             updateProgress();
             updateStreakCount();
 
-            // Update stats
+          
             setTimeout(() => {
                 updateOverallStats();
                 updateCategoryStats();
             }, 100);
         }
 
-        // Theme Management
+        
         function toggleTheme() {
             currentTheme = currentTheme === 'light' ? 'dark' : 'light';
             const themeToggle = document.querySelector('.theme-toggle');
@@ -88,17 +87,17 @@
             }
         }
 
-        // Tab Management
+   
         function switchTab(tabName) {
-            // Update tab buttons
+            
             document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
 
-            // Update content sections
+            
             document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
 
-            // Tab-specific updates
+          
             if (tabName === 'manage') {
                 updateCardList();
             } else if (tabName === 'progress') {
@@ -110,7 +109,7 @@
             }
         }
 
-        // Card Management
+       
         function loadCards() {
             const savedCards = localStorage.getItem('studyCards');
             if (savedCards) {
@@ -150,7 +149,7 @@
             updateCategorySelectors();
             showMessage('create', 'Card created successfully! 🎉', 'success');
 
-            // Animate the form
+           
             document.querySelector('.card-form').classList.add('animate-bounce');
             setTimeout(() => {
                 document.querySelector('.card-form').classList.remove('animate-bounce');
@@ -213,7 +212,7 @@
             editingCardId = null;
         }
 
-        // Category Management
+       
         function updateCategorySelectors() {
             const categories = ['all', ...new Set(cards.map(card => card.category))];
             const selectors = ['studyCategorySelector', 'manageCategorySelector', 'quizCategorySelector'];
@@ -230,12 +229,12 @@
                         if (category === currentCategory) btn.classList.add('active');
 
                         btn.onclick = () => {
-                            // Update active state
+                            
                             selector.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
                             btn.classList.add('active');
                             currentCategory = category;
 
-                            // Update relevant content
+                           
                             if (selectorId === 'studyCategorySelector') {
                                 updateStudyCards();
                                 showCurrentCard();
@@ -250,7 +249,7 @@
             });
         }
 
-        // Study Mode
+     
         function updateStudyCards() {
             currentStudyCards = cards.filter(card => {
                 const notMastered = card.correctCount < 3;
@@ -281,11 +280,11 @@
             questionEl.textContent = card.question;
             answerEl.textContent = card.answer;
 
-            // Reset flip state
+           
             isFlipped = false;
             document.getElementById('flashcard').classList.remove('flipped');
 
-            // Add animation
+        
             document.getElementById('flashcard').classList.add('animate-fadeInUp');
             setTimeout(() => {
                 document.getElementById('flashcard').classList.remove('animate-fadeInUp');
@@ -370,7 +369,7 @@
             }
         }
 
-        // Progress Tracking
+        
         function updateProgress() {
             const totalCards = cards.filter(card => 
                 currentCategory === 'all' || card.category === currentCategory
@@ -388,7 +387,7 @@
                 `${masteredCards} of ${totalCards} cards mastered`;
         }
 
-        // Quiz Mode
+   
         function startQuiz() {
             quizCards = cards.filter(card => 
                 currentCategory === 'all' || card.category === currentCategory
@@ -399,18 +398,17 @@
                 return;
             }
 
-            // Shuffle quiz cards
+         
             for (let i = quizCards.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [quizCards[i], quizCards[j]] = [quizCards[j], quizCards[i]];
             }
 
             quizActive = true;
-            quizTimeLeft = 300; // 5 minutes
+            quizTimeLeft = 300; 
             quizStats = { correct: 0, wrong: 0 };
             currentQuizIndex = 0;
 
-            // Update UI
             document.getElementById('quizStartBtn').style.display = 'none';
             document.getElementById('quizWrongBtn').style.display = 'inline-block';
             document.getElementById('quizRightBtn').style.display = 'inline-block';
@@ -445,7 +443,6 @@
             document.getElementById('quizQuestion').textContent = card.question;
             document.getElementById('quizAnswer').textContent = card.answer;
 
-            // Reset flip state
             document.getElementById('quizCard').classList.remove('flipped');
         }
 
@@ -475,13 +472,12 @@
             quizActive = false;
             clearInterval(quizTimer);
 
-            // Update UI
             document.getElementById('quizStartBtn').style.display = 'inline-block';
             document.getElementById('quizWrongBtn').style.display = 'none';
             document.getElementById('quizRightBtn').style.display = 'none';
             document.getElementById('quizStopBtn').style.display = 'none';
 
-            // Show results
+           
             const total = quizStats.correct + quizStats.wrong;
             const scorePercent = total > 0 ? Math.round((quizStats.correct / total) * 100) : 0;
 
@@ -490,15 +486,14 @@
             document.getElementById('quizScore').textContent = scorePercent + '%';
             document.getElementById('quizResults').style.display = 'block';
 
-            // Reset timer display
+        
             document.getElementById('timer').textContent = '05:00';
 
-            // Reset quiz card
             document.getElementById('quizQuestion').textContent = 'Click "Start Quiz" to begin!';
             document.getElementById('quizAnswer').textContent = 'Good luck! 🍀';
         }
 
-        // Card List Management
+   
         function updateCardList() {
             const cardList = document.getElementById('cardList');
             const filteredCards = currentCategory === 'all' 
@@ -525,7 +520,7 @@
             `).join('');
         }
 
-        // Import/Export
+       
         function exportCards() {
             const dataStr = JSON.stringify(cards, null, 2);
             const dataBlob = new Blob([dataStr], { type: 'application/json' });
@@ -553,7 +548,7 @@
                 try {
                     const importedCards = JSON.parse(e.target.result);
                     if (Array.isArray(importedCards)) {
-                        // Add unique IDs to imported cards
+                       
                         importedCards.forEach(card => {
                             if (!card.id) card.id = Date.now() + Math.random();
                             if (typeof card.correctCount !== 'number') card.correctCount = 0;
@@ -574,11 +569,11 @@
             };
             reader.readAsText(file);
 
-            // Reset file input
+            
             event.target.value = '';
         }
 
-        // Statistics
+      
         function updateOverallStats() {
             const totalCards = cards.length;
             const masteredCards = cards.filter(card => card.correctCount >= 3).length;
@@ -589,7 +584,7 @@
             document.getElementById('overallProgressFill').style.width = progressPercent + '%';
             document.getElementById('overallProgressText').textContent = progressPercent + '% Complete';
 
-            // Update cards studied today
+           
             const today = new Date().toDateString();
             const studiedToday = localStorage.getItem('cardsStudiedToday');
             const studiedData = studiedToday ? JSON.parse(studiedToday) : {};
@@ -652,7 +647,7 @@
             let streak = 0;
             const today = new Date();
 
-            for (let i = 0; i < 30; i++) { // Check last 30 days
+            for (let i = 0; i < 30; i++) { 
                 const checkDate = new Date(today);
                 checkDate.setDate(today.getDate() - i);
                 const dateStr = checkDate.toDateString();
@@ -667,7 +662,7 @@
             document.getElementById('studyStreak').textContent = streak;
         }
 
-        // Utility Functions
+       
         function showMessage(section, message, type) {
             const messageEl = document.getElementById(section + 'Message') || 
                             document.querySelector(`#${section} .message`) ||
@@ -677,25 +672,26 @@
             messageEl.textContent = message;
             messageEl.style.display = 'block';
 
-            // If message element doesn't exist, create and append it
+           
             if (!messageEl.parentNode) {
                 messageEl.id = section + 'Message';
                 document.getElementById(section).appendChild(messageEl);
             }
 
-            // Auto-hide after 3 seconds
+          
             setTimeout(() => {
                 messageEl.style.display = 'none';
             }, 3000);
         }
 
-        // Initialize app when DOM is loaded
+      
         document.addEventListener('DOMContentLoaded', initApp);
 
-        // Close modal when clicking outside
+       
         window.onclick = function(event) {
             const modal = document.getElementById('editModal');
             if (event.target === modal) {
                 closeEditModal();
             }
+
         }
