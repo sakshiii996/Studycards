@@ -4,7 +4,7 @@ This is a simple, yet effective, web-based flashcard application designed to hel
 
 ---
 
-live demo : 
+live demo : https://studycards-two.vercel.app/
 
 ## ✨ Features
 
